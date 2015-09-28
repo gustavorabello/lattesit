@@ -161,7 +161,7 @@ def technicalProduction(_tree,_csvFile,_area,_fromyear):
      flag = info[0].attrib['FLAG-RELEVANCIA']
      country = info[0].attrib['PAIS-DE-PUBLICACAO']
      publisher = info[1].attrib['NOME-DA-EDITORA']
-     addinfo = info[-1].attrib['DESCRICAO-INFORMACOES-ADICIONAIS']
+     #addinfo = info[-1].attrib['DESCRICAO-INFORMACOES-ADICIONAIS']
      booktitle = info[1].attrib['TITULO-DO-LIVRO']
      if flag == 'SIM':
       important.append([title,booktitle,year])
