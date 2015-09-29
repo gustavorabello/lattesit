@@ -44,7 +44,7 @@ def personalInfo(_tree):
  name = info.attrib['NOME-COMPLETO']
  cite = info.attrib['NOME-EM-CITACOES-BIBLIOGRAFICAS']
  country = info.attrib['PAIS-DE-NASCIMENTO']
- resume = info[0].attrib['TEXTO-RESUMO-CV-RH']
+ #resume = info[0].attrib['TEXTO-RESUMO-CV-RH']
  #other = info[1].attrib['OUTRAS-INFORMACOES-RELEVANTES']
  #workName = info[2][0].attrib['NOME-INSTITUICAO-EMPRESA']
  #workCountry = info[2][0].attrib['PAIS']
