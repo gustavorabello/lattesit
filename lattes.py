@@ -149,7 +149,7 @@ def technicalProduction(_tree,_csvFile,_area,_fromyear):
       for row in reader:
        if row[0] in issn and \
           _area in row[3]: 
-        journal.append([kind.tag,journaltitle,year,row[2]])
+        journal.append([kind.tag,title,journaltitle,year,row[2]])
 
   # Book chapters
   if kind.tag == 'LIVROS-E-CAPITULOS':

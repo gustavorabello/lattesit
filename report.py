@@ -28,17 +28,6 @@ def retrieveInfo(_program,_name,_fromyear):
  important = binfo[0] 
  congress = binfo[1]
  journal = binfo[2]
- A1=0; A2=0; B1=0; B2=0; B3=0; B4=0; B5=0; C=0;
- for j in journal:
-  A1 = A1 + j.count("A1")
-  A2 = A2 + j.count("A2")
-  B1 = B1 + j.count("B1")
-  B2 = B2 + j.count("B2")
-  B3 = B3 + j.count("B3")
-  B4 = B4 + j.count("B4")
-  B5 = B5 + j.count("B5")
-  C = C + j.count("C ")
-
  chapter = binfo[3]
  book = binfo[4]
 
@@ -55,31 +44,88 @@ def retrieveInfo(_program,_name,_fromyear):
  mscNot = cinfo[0] 
  dscNot = cinfo[1] 
 
- return [pinfo,fromyear,len(congress), len(journal),A1,A2,B1,B2,B3,B4,B5,C,len(chapter), len(book), len(msc), len(dsc), len(mscNot), len(dscNot)]
+ return [pinfo,fromyear,congress,journal,chapter,book,msc,dsc,mscNot,dscNot]
 
 def printInfo(_info):
+ zipped = zip(*_info)
+
+ congress = 0
+ for person in zipped[2]:
+  congress = congress + len(person)/4
+
+ journal = 0
+ ## flat list: turn a list of list into list
+ jour = [item for sublist in list(zipped[3]) for item in sublist]
+
+ ## Remove duplicates from a list 
+ # make it tuple again
+ tjour = tuple(jour)
+ b_set = set(map(tuple,tjour)) 
+ jour = map(list,b_set)
+
+ A1=0; A2=0; B1=0; B2=0; B3=0; B4=0; B5=0; C=0;
+ for person in jour:
+  journal = journal + len(person)/5
+  for j in person:
+   A1 = A1 + j.count("A1")
+   A2 = A2 + j.count("A2")
+   B1 = B1 + j.count("B1")
+   B2 = B2 + j.count("B2")
+   B3 = B3 + j.count("B3")
+   B4 = B4 + j.count("B4")
+   B5 = B5 + j.count("B5")
+   C  = C  + j.count("C ")
+
+ chapter = 0
+ for person in zipped[4]:
+  chapter = chapter + len(person)
+
+ book = 0
+ for person in zipped[5]:
+  book = book + len(person)
+
+ msc = 0
+ for person in zipped[6]:
+  msc = msc + len(person)
+
+ dsc = 0
+ for person in zipped[7]:
+  dsc = dsc + len(person)
+
+ mscNot = 0
+ for person in zipped[8]:
+  mscNot = mscNot + len(person)
+
+ dscNot = 0
+ for person in zipped[9]:
+  dscNot = dscNot + len(person)
+
  now = datetime.datetime.now()
  print ''
- print 'RELATORIO DO ', _info[0]
- print 'PERIODO ANALISADO: ' + str(int(_info[1])) + \
+ print 'RELATORIO DE:'
+ for item in zipped[0]:
+  print '              ' + item
+ print ''
+ print 'PROGRAMA:', sys.argv[1]
+ print 'PERIODO ANALISADO: ' + str(int(zipped[1][0])) + \
        ' -- ' + str(now.month) + '/' + str(now.year)
  print ''
- print ' - total de publicacoes em congresso: ',_info[2]
- print ' - total de artigos em journal: ',_info[3]
- print '   - A1: ',_info[4]
- print '   - A2: ',_info[5]
- print '   - B1: ',_info[6]
- print '   - B2: ',_info[7]
- print '   - B3: ',_info[8]
- print '   - B4: ',_info[9]
- print '   - B5: ',_info[10]
- print '   - C: ',_info[11]
- print ' - total de capitulos publicados: ',_info[12]
- print ' - total de livros publicados: ',_info[13]
- print ' - total de dissertacoes de MSc: ',_info[14]
- print ' - total de teses de DSc: ',_info[15]
- print ' - total de dissertacoes de MSc em andamento: ',_info[16]
- print ' - total de teses de DSc em andamento: ',_info[17]
+ print ' - total de publicacoes em congresso: ',congress
+ print ' - total de artigos em journal: ',journal
+ print '   - A1: ',A1
+ print '   - A2: ',A2
+ print '   - B1: ',B1
+ print '   - B2: ',B2
+ print '   - B3: ',B3
+ print '   - B4: ',B4
+ print '   - B5: ',B5
+ print '   - C: ',C
+ print ' - total de capitulos publicados: ',chapter
+ print ' - total de livros publicados: ',book
+ print ' - total de dissertacoes de MSc: ',msc
+ print ' - total de teses de DSc: ',dsc
+ print ' - total de dissertacoes de MSc em andamento: ',mscNot
+ print ' - total de teses de DSc em andamento: ',dscNot
  print ''
 
 def all():
@@ -92,23 +138,23 @@ def all():
   name = os.path.splitext(base)[0]
   lattes.append(name)
 
- lists = [0]*16
- sumInfo = []
- for name in lattes:
-  fromyear = sys.argv[2]
+ fromyear = sys.argv[2]
+ sumInfo = [retrieveInfo(sys.argv[1],lattes[0],fromyear)]
+ print 'Analizando Lattes de',lattes[0]
+ for name in lattes[1:]:
   info = retrieveInfo(sys.argv[1],name,fromyear)
-  print 'Analizing Lattes of',name
-  lists = [sum(x) for x in zip(lists,info[2:])]
+  sumInfo = sumInfo + [info]
+  print 'Analizando Lattes de',name
 
- printInfo([sys.argv[1]]+[fromyear]+lists)
+ printInfo(sumInfo)
 
 def single(_program,_name,_fromyear):
 
  filename = os.getcwd()+'/'+_program+'/'+_name+'.xml'
  if os.path.isfile(filename):
-  print 'Analizing Lattes of',_name
+  print 'Analizando Lattes de',_name
   # retrieve lattes files
-  info = retrieveInfo(_program,_name,_fromyear)
+  info = [retrieveInfo(_program,_name,_fromyear)]
  else:
   print ''
   print 'Check scientist and program name!'
