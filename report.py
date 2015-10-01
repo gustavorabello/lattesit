@@ -49,56 +49,58 @@ def retrieveInfo(_program,_name,_fromyear):
 def printInfo(_info):
  zipped = zip(*_info)
 
- congress = 0
- for person in zipped[2]:
-  congress = congress + len(person)/4
+ countCongress = 0
+ congress = zipped[2]
+ for item in congress:
+  countCongress = countCongress + len(item)
 
- journal = 0
- ## flat list: turn a list of list into list
- jour = [item for sublist in list(zipped[3]) for item in sublist]
+ countJournal = 0
+ journal = zipped[3]
 
- ## Remove duplicates from a list 
- # make it tuple again
- tjour = tuple(jour)
- b_set = set(map(tuple,tjour)) 
- jour = map(list,b_set)
+ journal = removeDuplicates(journal)
 
  A1=0; A2=0; B1=0; B2=0; B3=0; B4=0; B5=0; C=0;
- for person in jour:
-  journal = journal + len(person)/5
-  for j in person:
-   A1 = A1 + j.count("A1")
-   A2 = A2 + j.count("A2")
-   B1 = B1 + j.count("B1")
-   B2 = B2 + j.count("B2")
-   B3 = B3 + j.count("B3")
-   B4 = B4 + j.count("B4")
-   B5 = B5 + j.count("B5")
-   C  = C  + j.count("C ")
+ for item in journal:
+  countJournal = countJournal + len(item)
+  for j in item:
+   A1 = A1 + j[4].count("A1")
+   A2 = A2 + j[4].count("A2")
+   B1 = B1 + j[4].count("B1")
+   B2 = B2 + j[4].count("B2")
+   B3 = B3 + j[4].count("B3")
+   B4 = B4 + j[4].count("B4")
+   B5 = B5 + j[4].count("B5")
+   C  = C  + j[4].count("C ")
 
- chapter = 0
- for person in zipped[4]:
-  chapter = chapter + len(person)
+ chapter = zipped[4]
+ countChapter = 0
+ for item in chapter:
+  countChapter = countChapter + len(item)
 
- book = 0
- for person in zipped[5]:
-  book = book + len(person)
+ book = zipped[5]
+ countBook = 0
+ for item in book:
+  countBook = countBook + len(item)
 
- msc = 0
- for person in zipped[6]:
-  msc = msc + len(person)
+ msc = zipped[6]
+ countMsc = 0
+ for item in msc:
+  countmsc = countMsc + len(item)
 
- dsc = 0
- for person in zipped[7]:
-  dsc = dsc + len(person)
+ dsc = zipped[7]
+ countDsc = 0
+ for item in dsc:
+  countDsc = countDsc + len(item)
 
- mscNot = 0
- for person in zipped[8]:
-  mscNot = mscNot + len(person)
+ mscNot = zipped[8]
+ countMscNot = 0
+ for item in mscNot:
+  countMscNot = countMscNot + len(item)
 
- dscNot = 0
- for person in zipped[9]:
-  dscNot = dscNot + len(person)
+ dscNot = zipped[9]
+ countDscNot = 0
+ for item in dscNot:
+  countDscNot = countDscNot + len(item)
 
  now = datetime.datetime.now()
  print ''
@@ -110,8 +112,8 @@ def printInfo(_info):
  print 'PERIODO ANALISADO: ' + str(int(zipped[1][0])) + \
        ' -- ' + str(now.month) + '/' + str(now.year)
  print ''
- print ' - total de publicacoes em congresso: ',congress
- print ' - total de artigos em journal: ',journal
+ print ' - total de publicacoes em congresso: ',countCongress
+ print ' - total de artigos em journal: ',countJournal
  print '   - A1: ',A1
  print '   - A2: ',A2
  print '   - B1: ',B1
@@ -120,13 +122,23 @@ def printInfo(_info):
  print '   - B4: ',B4
  print '   - B5: ',B5
  print '   - C: ',C
- print ' - total de capitulos publicados: ',chapter
- print ' - total de livros publicados: ',book
- print ' - total de dissertacoes de MSc: ',msc
- print ' - total de teses de DSc: ',dsc
- print ' - total de dissertacoes de MSc em andamento: ',mscNot
- print ' - total de teses de DSc em andamento: ',dscNot
+ print ' - total de capitulos publicados: ',countChapter
+ print ' - total de livros publicados: ',countBook
+ print ' - total de dissertacoes de MSc: ',countMsc
+ print ' - total de teses de DSc: ',countDsc
+ print ' - total de dissertacoes de MSc em andamento: ',countMscNot
+ print ' - total de teses de DSc em andamento: ',countDscNot
  print ''
+
+### Remove duplicates from a list 
+def removeDuplicates(_tupleList):
+ # flat list: turn a list of list into list
+ flatlist = [item for sublist in list(_tupleList) for item in sublist]
+ # make it tuple again
+ tupList = tuple(flatlist)
+ b_set = set(map(tuple,tupList)) 
+ # back to list
+ return [map(list,b_set)]
 
 def all():
 
