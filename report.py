@@ -24,7 +24,7 @@ def retrieveInfo(_program,_name,_fromyear):
  pinfo = lt.personalInfo(tree)
 
  # [important,congress,journal,chapter,book]
- binfo = lt.technicalProduction(tree,csvFile,area,fromyear)
+ binfo = lt.biblioProduction(tree,csvFile,area,fromyear)
  important = binfo[0] 
  congress = binfo[1]
  journal = binfo[2]
@@ -34,19 +34,28 @@ def retrieveInfo(_program,_name,_fromyear):
  tinfo = lt.thesisConcluded(tree,fromyear)
  msc = []
  dsc = []
+ ic  = []
  if tinfo:
   msc = tinfo[0] 
   dsc = tinfo[1] 
+  ic  = tinfo[2]
 
  cinfo = lt.thesisNotConcluded(tree,fromyear)
  mscNot = []
  dscNot = []
+ icNot  = []
  mscNot = cinfo[0] 
  dscNot = cinfo[1] 
+ icNot = cinfo[2] 
 
- return [pinfo,fromyear,congress,journal,chapter,book,msc,dsc,mscNot,dscNot]
+ techinfo = lt.technicalProduction(tree,fromyear)
+ patent = []
+ if techinfo:
+  patent = techinfo[0] 
 
-def printInfo(_info):
+ return [pinfo,fromyear,congress,journal,chapter,book,msc,dsc,ic,mscNot,dscNot,icNot,patent]
+
+def countInfo(_info):
  zipped = zip(*_info)
 
  countCongress = 0
@@ -57,7 +66,7 @@ def printInfo(_info):
  countJournal = 0
  journal = zipped[3]
 
- journal = removeDuplicates(journal)
+ #journal = removeDuplicates(journal)
 
  A1=0; A2=0; B1=0; B2=0; B3=0; B4=0; B5=0; C=0;
  for item in journal:
@@ -85,50 +94,105 @@ def printInfo(_info):
  msc = zipped[6]
  countMsc = 0
  for item in msc:
-  countmsc = countMsc + len(item)
+  countMsc = countMsc + len(item)
 
  dsc = zipped[7]
  countDsc = 0
  for item in dsc:
   countDsc = countDsc + len(item)
 
- mscNot = zipped[8]
+ ic = zipped[8]
+ countIc= 0
+ for item in ic:
+  countIc = countIc + len(item)
+
+ mscNot = zipped[9]
  countMscNot = 0
  for item in mscNot:
   countMscNot = countMscNot + len(item)
 
- dscNot = zipped[9]
+ dscNot = zipped[10]
  countDscNot = 0
  for item in dscNot:
   countDscNot = countDscNot + len(item)
 
+ icNot = zipped[11]
+ countIcNot = 0
+ for item in icNot:
+  countIcNot = countIcNot + len(item)
+
+ patent = zipped[12]
+ countPatent = 0
+ for item in patent:
+  countPatent = countPatent + len(item)
+
+ # name,program,fromyear,congress,journal,A1,A2,B1,B2,B3,B4,B5,C,chapter,book,ic,msc,dsc,icNot,mscNot,dscNot,patent]
+ return [zipped[0],sys.argv[1],str(int(zipped[1][0])),countCongress, countJournal, A1, A2, B1, B2, B3, B4, B5, C, countChapter, countBook, countIc, countMsc, countDsc, countIcNot, countMscNot, countDscNot, countPatent]
+
+def printInfo(_info):
+ item = countInfo(_info)
+
  now = datetime.datetime.now()
  print ''
  print 'RELATORIO DE:'
- for item in zipped[0]:
-  print '              ' + item
+ for it in item[0]:
+  print '              ' + it
  print ''
- print 'PROGRAMA:', sys.argv[1]
- print 'PERIODO ANALISADO: ' + str(int(zipped[1][0])) + \
+ print 'PROGRAMA:', item[1]
+ print 'PERIODO ANALISADO: ' + item[2] + \
        ' -- ' + str(now.month) + '/' + str(now.year)
  print ''
- print ' - total de publicacoes em congresso: ',countCongress
- print ' - total de artigos em journal: ',countJournal
- print '   - A1: ',A1
- print '   - A2: ',A2
- print '   - B1: ',B1
- print '   - B2: ',B2
- print '   - B3: ',B3
- print '   - B4: ',B4
- print '   - B5: ',B5
- print '   - C: ',C
- print ' - total de capitulos publicados: ',countChapter
- print ' - total de livros publicados: ',countBook
- print ' - total de dissertacoes de MSc: ',countMsc
- print ' - total de teses de DSc: ',countDsc
- print ' - total de dissertacoes de MSc em andamento: ',countMscNot
- print ' - total de teses de DSc em andamento: ',countDscNot
+ print ' - total de publicacoes em congresso: ',item[3]
+ print ' - total de artigos em journal: ',item[4]
+ print '   - A1: ',item[5]
+ print '   - A2: ',item[6]
+ print '   - B1: ',item[7]
+ print '   - B2: ',item[8]
+ print '   - B3: ',item[9]
+ print '   - B4: ',item[10]
+ print '   - B5: ',item[11]
+ print '   - C: ',item[12]
+ print ' - total de capitulos publicados: ',item[13]
+ print ' - total de livros publicados: ',item[14]
+ print ' - total de IC: ',item[15]
+ print ' - total de dissertacoes de MSc: ',item[16]
+ print ' - total de teses de DSc: ',item[17]
+ print ' - total de IC em andamento: ',item[18]
+ print ' - total de dissertacoes de MSc em andamento: ',item[19]
+ print ' - total de teses de DSc em andamento: ',item[20]
+ print ' - total de patentes: ',item[21]
  print ''
+
+def csvInfo(_info):
+ item = countInfo(_info)
+ 
+ now = datetime.datetime.now()
+ filename = "output.csv"
+ text_file = []
+ if os.path.isfile(filename):
+  text_file = open(filename, "a")
+ else:
+  text_file = open(filename, "w")
+  header = ' ,'
+  header = header + 'Periodicos Indexados Qualis A1 e A2, '
+  header = header + 'Periodicos Indexados Qualis B1 e B2, '
+  header = header + 'Livros e Capitulos, '
+  header = header + 'Patentes Depositadas ou Concedidas, '
+  header = header + 'Alunos de IC, '
+  header = header + 'Orientacao de Mestres e Doutores, '
+  header = header + 'Outras Producoes \n'
+  text_file.write(header)
+
+ string = (''.join(item[0])).encode('latin-1') + ',  ' # name
+ string = string + str(item[5]+item[6]) + ',  ' # A1+A2
+ string = string + str(item[7]+item[8]) + ',  ' # B1+B2
+ string = string + str(item[13]+item[14]) + ',  ' # chapter+book
+ string = string + str(item[21]) + ',  ' # patent
+ string = string + str(item[15]+item[18]) + ',  ' # ic + icNot
+ string = string + str(item[16]+item[19]+item[17]+item[20]) + ',  ' # msc+mscNot+dsc+dscNot
+ string = string + str(item[3]) + '\n' # congress
+ text_file.write(string)
+ text_file.close()
 
 ### Remove duplicates from a list 
 def removeDuplicates(_tupleList):
@@ -160,6 +224,23 @@ def all():
 
  printInfo(sumInfo)
 
+def eachAll():
+
+ # retrieve lattes files
+ lattes = []
+ filePath = os.getcwd() + '/' + sys.argv[1] + '/'
+ for file in glob.glob(filePath + '/*.xml'):
+  base = os.path.basename(file)
+  name = os.path.splitext(base)[0]
+  lattes.append(name)
+
+ fromyear = sys.argv[2]
+ for name in lattes:
+  info = retrieveInfo(sys.argv[1],name,fromyear)
+  print 'Analizando Lattes de',name
+  #printInfo([info])
+  csvInfo([info])
+
 def single(_program,_name,_fromyear):
 
  filename = os.getcwd()+'/'+_program+'/'+_name+'.xml'
@@ -186,7 +267,8 @@ def main():
  try:
   single(sys.argv[1],sys.argv[2],sys.argv[3])
  except:
-  all()
+  #all()
+  eachAll()
 
 if __name__ == "__main__":
  main()

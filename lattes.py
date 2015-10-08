@@ -99,7 +99,7 @@ def personalInfo(_tree):
 ## ------------ ##
 ## Bibliography
 ## ------------ ##
-def technicalProduction(_tree,_csvFile,_area,_fromyear):
+def biblioProduction(_tree,_csvFile,_area,_fromyear):
  bib = _tree.find('PRODUCAO-BIBLIOGRAFICA')   # bibliography
  if bib == None:
   #print 'Este lattes nao tem producao bibliografica'
@@ -151,7 +151,7 @@ def technicalProduction(_tree,_csvFile,_area,_fromyear):
           _area in row[3]: 
         journal.append([kind.tag,title,journaltitle,year,row[2]])
 
-  # Book chapters
+  # Book and book chapters
   if kind.tag == 'LIVROS-E-CAPITULOS':
    if kind[0].tag == 'CAPITULOS-DE-LIVROS-PUBLICADOS':
     for info in kind[0]:
@@ -168,7 +168,8 @@ def technicalProduction(_tree,_csvFile,_area,_fromyear):
  
      if float(year)/_fromyear>= 1.0:
       chapter.append([kind.tag,title,year])
- 
+
+   # Books
    if kind[0].tag == 'LIVROS-PUBLICADOS-OU-ORGANIZADOS':
     for info in kind[0]:
      number = info.attrib['SEQUENCIA-PRODUCAO']
@@ -198,12 +199,13 @@ def thesisConcluded(_tree,_fromyear):
 
  msc = []
  dsc = []
+ ic  = []
 
  for kind in thesis:
   if kind.tag == 'ORIENTACOES-CONCLUIDAS':
    for info in kind:
 
-    # M.Sc. not concluded
+    # M.Sc. concluded
     if info.tag == 'ORIENTACOES-CONCLUIDAS-PARA-MESTRADO':
      title = info[0].attrib['TITULO']
      year = info[0].attrib['ANO']
@@ -215,7 +217,7 @@ def thesisConcluded(_tree,_fromyear):
      if float(year)/_fromyear>= 1.0:
       msc.append([info.tag,year,title,principal,agency])
 
-    # D.Sc. not concluded
+    # D.Sc. concluded
     if info.tag == 'ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO':
      title = info[0].attrib['TITULO']
      year = info[0].attrib['ANO']
@@ -227,7 +229,20 @@ def thesisConcluded(_tree,_fromyear):
      if float(year)/_fromyear>= 1.0:
       dsc.append([info.tag,year,title,principal,agency])
 
- return [msc,dsc]
+    # IC concluded
+    if info.tag == 'OUTRAS-ORIENTACOES-CONCLUIDAS':
+     quality = info[0].attrib['NATUREZA']
+     title = info[0].attrib['TITULO']
+     year = info[0].attrib['ANO']
+     student = info[1].attrib['NOME-DO-ORIENTADO']
+     scholarship = info[1].attrib['FLAG-BOLSA']
+     agency = info[1].attrib['NOME-DA-AGENCIA']
+   
+     if float(year)/_fromyear>= 1.0 and \
+        quality == 'INICIACAO_CIENTIFICA':
+        ic.append([info.tag,year,title,student])
+
+ return [msc,dsc,ic]
 
 
 def thesisNotConcluded(_tree,_fromyear):
@@ -241,6 +256,7 @@ def thesisNotConcluded(_tree,_fromyear):
 
  msc = []
  dsc = []
+ ic  = []
  
  for kind in thesis:
   if kind.tag == 'ORIENTACOES-EM-ANDAMENTO':
@@ -270,5 +286,40 @@ def thesisNotConcluded(_tree,_fromyear):
      if float(year)/_fromyear>= 1.0:
       dsc.append([info.tag,year,title,principal,agency])
 
- return [msc,dsc]
+    # IC not concluded
+    if info.tag == 'ORIENTACAO-EM-ANDAMENTO-DE-INICIACAO-CIENTIFICA':
+     title = info[0].attrib['TITULO-DO-TRABALHO']
+     year = info[0].attrib['ANO']
+     student = info[1].attrib['NOME-DO-ORIENTANDO']
+     scholarship = info[1].attrib['FLAG-BOLSA']
+     agency = info[1].attrib['NOME-DA-AGENCIA']
+   
+     if float(year)/_fromyear>= 1.0:
+        ic.append([info.tag,year,title,student])
 
+ return [msc,dsc,ic]
+
+## -------------------- ##
+## Technical Production
+## -------------------- ##
+def technicalProduction(_tree,_fromyear):
+ tech = _tree.find('PRODUCAO-TECNICA')   # Technical
+ if tech == None:
+  #print 'Este lattes nao tem producao tecnica'
+  return None
+
+ important = []
+ patent = []
+
+ for kind in tech:
+  # Patents
+  if kind.tag == 'PATENTE':
+   title = kind[0].attrib['TITULO']
+   year = kind[0].attrib['ANO-DESENVOLVIMENTO']
+   flag = kind[0].attrib['FLAG-RELEVANCIA']
+   if flag == 'SIM':
+    important.append([title,year])
+   if float(year)/_fromyear>= 1.0:
+    patent.append([kind.tag,title,year])
+
+ return [patent]
