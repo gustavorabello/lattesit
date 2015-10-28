@@ -18,7 +18,8 @@ def retrieveInfo(_program,_name,_fromyear):
 
  filePath = os.getcwd() + '/' + _program + '/'
  xmlFile = filePath + _name + '.xml'
- csvFile = os.getcwd() + '/qualis/' + 'Consulta_Webqualis' + '.csv'
+ #csvFile = os.getcwd() + '/qualis/' + 'Consulta_Webqualis' + '.csv'
+ csvFile = os.getcwd() + '/qualis/' + 'classificacoes_publicadas_engenharias_iii_2014' + '.csv'
  tree = ET.parse(xmlFile)
 
  pinfo = lt.personalInfo(tree)
@@ -174,22 +175,30 @@ def csvInfo(_info):
  else:
   text_file = open(filename, "w")
   header = ' ,'
-  header = header + 'Periodicos Indexados Qualis A1 e A2, '
-  header = header + 'Periodicos Indexados Qualis B1 e B2, '
-  header = header + 'Livros e Capitulos, '
+  header = header + 'Periodicos Indexados Qualis A1, '
+  header = header + 'Periodicos Indexados Qualis A2, '
+  header = header + 'Periodicos Indexados Qualis B1, '
+  header = header + 'Periodicos Indexados Qualis B2, '
+  header = header + 'Capitulos, '
+  header = header + 'Livros, '
   header = header + 'Patentes Depositadas ou Concedidas, '
   header = header + 'Alunos de IC, '
-  header = header + 'Orientacao de Mestres e Doutores, '
+  header = header + 'Orientacao de Mestres, '
+  header = header + 'Orientacao de Doutores, '
   header = header + 'Outras Producoes \n'
   text_file.write(header)
 
  string = (''.join(item[0])).encode('latin-1') + ',  ' # name
- string = string + str(item[5]+item[6]) + ',  ' # A1+A2
- string = string + str(item[7]+item[8]) + ',  ' # B1+B2
- string = string + str(item[13]+item[14]) + ',  ' # chapter+book
+ string = string + str(item[5]) + ',  ' # A1
+ string = string + str(item[6]) + ',  ' # A2
+ string = string + str(item[7]) + ',  ' # B1
+ string = string + str(item[8]) + ',  ' # B2
+ string = string + str(item[13]) + ',  ' # chapter
+ string = string + str(item[14]) + ',  ' # book
  string = string + str(item[21]) + ',  ' # patent
- string = string + str(item[15]+item[18]) + ',  ' # ic + icNot
- string = string + str(item[16]+item[19]+item[17]+item[20]) + ',  ' # msc+mscNot+dsc+dscNot
+ string = string + str(item[15]) + ',  ' # ic
+ string = string + str(item[16]) + ',  ' # msc
+ string = string + str(item[17]) + ',  ' # dsc
  string = string + str(item[3]) + '\n' # congress
  text_file.write(string)
  text_file.close()
@@ -204,7 +213,7 @@ def removeDuplicates(_tupleList):
  # back to list
  return [map(list,b_set)]
 
-def all():
+def allPrint():
 
  # retrieve lattes files
  lattes = []
@@ -224,7 +233,7 @@ def all():
 
  printInfo(sumInfo)
 
-def eachAll():
+def allSave():
 
  # retrieve lattes files
  lattes = []
@@ -241,7 +250,7 @@ def eachAll():
   #printInfo([info])
   csvInfo([info])
 
-def single(_program,_name,_fromyear):
+def singlePrint(_program,_name,_fromyear):
 
  filename = os.getcwd()+'/'+_program+'/'+_name+'.xml'
  if os.path.isfile(filename):
@@ -265,10 +274,10 @@ def main():
   sys.exit()
 
  try:
-  single(sys.argv[1],sys.argv[2],sys.argv[3])
+  singlePrint(sys.argv[1],sys.argv[2],sys.argv[3])
  except:
-  #all()
-  eachAll()
+  allPrint()
+  #allSave()
 
 if __name__ == "__main__":
  main()

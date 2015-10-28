@@ -147,8 +147,7 @@ def biblioProduction(_tree,_csvFile,_area,_fromyear):
      with open(_csvFile, 'rt') as f:
       reader = csv.reader(f, delimiter=',')
       for row in reader:
-       if row[0] in issn and \
-          _area in row[3]: 
+       if row[0] in issn:
         journal.append([kind.tag,title,journaltitle,year,row[2]])
 
   # Book and book chapters
