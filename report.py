@@ -19,7 +19,8 @@ def retrieveInfo(_program,_name,_fromyear):
  filePath = os.getcwd() + '/' + _program + '/'
  xmlFile = filePath + _name + '.xml'
  #csvFile = os.getcwd() + '/qualis/' + 'Consulta_Webqualis' + '.csv'
- csvFile = os.getcwd() + '/qualis/' + 'classificacoes_publicadas_engenharias_iii_2014' + '.csv'
+ csvFile = os.getcwd() + '/qualis/' + \
+ 'classificacoes_publicadas_engenharias_iii_2014' + '.csv'
  tree = ET.parse(xmlFile)
 
  pinfo = lt.personalInfo(tree)
@@ -276,8 +277,8 @@ def main():
  try:
   singlePrint(sys.argv[1],sys.argv[2],sys.argv[3])
  except:
-  allPrint()
-  #allSave()
+  #allPrint()
+  allSave()
 
 if __name__ == "__main__":
  main()
