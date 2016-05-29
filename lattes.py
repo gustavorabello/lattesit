@@ -44,21 +44,6 @@ def personalInfo(_tree):
  name = info.attrib['NOME-COMPLETO']
  cite = info.attrib['NOME-EM-CITACOES-BIBLIOGRAFICAS']
  country = info.attrib['PAIS-DE-NASCIMENTO']
- #resume = info[0].attrib['TEXTO-RESUMO-CV-RH']
- #other = info[1].attrib['OUTRAS-INFORMACOES-RELEVANTES']
- #workName = info[2][0].attrib['NOME-INSTITUICAO-EMPRESA']
- #workCountry = info[2][0].attrib['PAIS']
- #workState = info[2][0].attrib['UF']
- #workStreet = info[2][0].attrib['LOGRADOURO-COMPLEMENTO']
- #workNeigh = info[2][0].attrib['BAIRRO']
- #workCity = info[2][0].attrib['CIDADE']
- #workMailbox = info[2][0].attrib['CAIXA-POSTAL']
- #workZipcode = info[2][0].attrib['CEP']
- #workPrefix = info[2][0].attrib['DDD']
- #workPhone = info[2][0].attrib['TELEFONE']
- #workFax = info[2][0].attrib['FAX']
- #workEmail = info[2][0].attrib['E-MAIL']
- #workHomepage = info[2][0].attrib['HOME-PAGE']
 
  for title in info[3]:
   # graduation
@@ -172,7 +157,6 @@ def biblioProduction(_tree,_csvFile,_area,_fromyear):
    if kind[0].tag == 'LIVROS-PUBLICADOS-OU-ORGANIZADOS':
     for info in kind[0]:
      number = info.attrib['SEQUENCIA-PRODUCAO']
-     title = info[0].attrib['TITULO-DO-LIVRO']
      year = info[0].attrib['ANO']
      flag = info[0].attrib['FLAG-RELEVANCIA']
      country = info[0].attrib['PAIS-DE-PUBLICACAO']
@@ -180,10 +164,10 @@ def biblioProduction(_tree,_csvFile,_area,_fromyear):
      booktitle = info[0].attrib['TITULO-DO-LIVRO']
      #addinfo = info[-1].attrib['DESCRICAO-INFORMACOES-ADICIONAIS']
      if flag == 'SIM':
-      important.append([title,booktitle,year])
+      important.append([booktitle,country,year])
   
      if float(year)/_fromyear>= 1.0:
-      book.append([kind[0].tag,title,year])
+      book.append([kind[0].tag,booktitle,year])
  
  return [important,congress,journal,chapter,book]
 
