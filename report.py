@@ -18,9 +18,9 @@ def retrieveInfo(_program,_name,_fromyear):
 
  filePath = os.getcwd() + '/' + _program + '/'
  xmlFile = filePath + _name + '.xml'
- #csvFile = os.getcwd() + '/qualis/' + 'Consulta_Webqualis' + '.csv'
- csvFile = os.getcwd() + '/qualis/' + \
- 'classificacoes_publicadas_engenharias_iii_2014' + '.csv'
+ csvFile = os.getcwd() + '/qualis/' + 'Consulta_Webqualis' + '.csv'
+ #csvFile = os.getcwd() + '/qualis/' + \
+ #'classificacoes_publicadas_engenharias_iii_2014' + '.csv'
  tree = ET.parse(xmlFile)
 
  pinfo = lt.personalInfo(tree)
@@ -197,9 +197,9 @@ def csvInfo(_info):
  string = string + str(item[13]) + ',  ' # chapter
  string = string + str(item[14]) + ',  ' # book
  string = string + str(item[21]) + ',  ' # patent
- string = string + str(item[15]) + ',  ' # ic
- string = string + str(item[16]) + ',  ' # msc
- string = string + str(item[17]) + ',  ' # dsc
+ string = string + str(item[15]+item[18]) + ',  ' # ic
+ string = string + str(item[16]+item[19]) + ',  ' # msc
+ string = string + str(item[17]+item[20]) + ',  ' # dsc
  string = string + str(item[3]) + '\n' # congress
  text_file.write(string)
  text_file.close()
