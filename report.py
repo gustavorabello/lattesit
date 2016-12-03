@@ -265,6 +265,7 @@ def singlePrint(_program,_name,_fromyear):
   return None
 
  printInfo(info)
+ csvInfo([info])
 
 def main():
  if len(sys.argv) < 3:
