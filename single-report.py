@@ -244,7 +244,7 @@ def allSave():
   name = os.path.splitext(base)[0]
   lattes.append(name)
 
- fromyear = sys.argv[2]
+ fromyear = float(sys.argv[3])
  for name in lattes:
   info = retrieveInfo(sys.argv[1],name,fromyear)
   print 'Analizando Lattes de',name
@@ -265,19 +265,17 @@ def singlePrint(_program,_name,_fromyear):
   return None
 
  printInfo(info)
- csvInfo([info])
+ #csvInfo([info])
 
 def main():
- if len(sys.argv) < 3:
+ if len(sys.argv) != 4:
   print 'Requires program name, scientist name and starting date!'
   print 'Ex. python report.py program name_of_scientist 2012'
   print 'Ex. python report.py program 2012'
   print ''
   sys.exit()
 
- else:
-  #allPrint()
-  allSave()
+ singlePrint(sys.argv[1],sys.argv[2],sys.argv[3])
 
 if __name__ == "__main__":
  main()
