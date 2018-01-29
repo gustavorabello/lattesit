@@ -112,6 +112,7 @@ def biblioProduction(_tree,_csvFile,_area,_fromyear):
      important.append([title,event,year])
 
     if float(year)/_fromyear>= 1.0:
+    #if float(year)/_fromyear>= 1.0 and float(year)/_fromyear<1.0013:
      congress.append([kind.tag,title,event,year])
 
   # Journal papers
@@ -151,6 +152,7 @@ def biblioProduction(_tree,_csvFile,_area,_fromyear):
       important.append([title,booktitle,year])
  
      if float(year)/_fromyear>= 1.0:
+     #if float(year)/_fromyear>= 1.0 and float(year)/_fromyear<1.0013:
       chapter.append([kind.tag,title,year])
 
    # Books
@@ -167,6 +169,7 @@ def biblioProduction(_tree,_csvFile,_area,_fromyear):
       important.append([booktitle,country,year])
   
      if float(year)/_fromyear>= 1.0:
+     #if float(year)/_fromyear>= 1.0 and float(year)/_fromyear<1.0013:
       book.append([kind[0].tag,booktitle,year])
  
  return [important,congress,journal,chapter,book]
@@ -198,6 +201,7 @@ def thesisConcluded(_tree,_fromyear):
      agency = info[1].attrib['NOME-DA-AGENCIA']
    
      if float(year)/_fromyear>= 1.0:
+     #if float(year)/_fromyear>= 1.0 and float(year)/_fromyear<1.0013:
       msc.append([info.tag,year,title,principal,agency])
 
     # D.Sc. concluded
@@ -210,6 +214,7 @@ def thesisConcluded(_tree,_fromyear):
      agency = info[1].attrib['NOME-DA-AGENCIA']
    
      if float(year)/_fromyear>= 1.0:
+     #if float(year)/_fromyear>= 1.0 and float(year)/_fromyear<1.0013:
       dsc.append([info.tag,year,title,principal,agency])
 
     # IC concluded
@@ -222,6 +227,7 @@ def thesisConcluded(_tree,_fromyear):
      agency = info[1].attrib['NOME-DA-AGENCIA']
    
      if float(year)/_fromyear>= 1.0 and \
+     #if float(year)/_fromyear>= 1.0 and float(year)/_fromyear<1.0013 and \
         quality == 'INICIACAO_CIENTIFICA':
         ic.append([info.tag,year,title,student])
 
@@ -255,6 +261,7 @@ def thesisNotConcluded(_tree,_fromyear):
      agency = info[1].attrib['NOME-DA-AGENCIA']
     
      if float(year)/_fromyear>= 1.0:
+     #if float(year)/_fromyear>= 1.0 and float(year)/_fromyear<1.0013:
       msc.append([info.tag,year,title,principal,agency])
  
     # D.Sc. not concluded
@@ -267,6 +274,7 @@ def thesisNotConcluded(_tree,_fromyear):
      agency = info[1].attrib['NOME-DA-AGENCIA']
    
      if float(year)/_fromyear>= 1.0:
+     #if float(year)/_fromyear>= 1.0 and float(year)/_fromyear<1.0013:
       dsc.append([info.tag,year,title,principal,agency])
 
     # IC not concluded
@@ -278,6 +286,7 @@ def thesisNotConcluded(_tree,_fromyear):
      agency = info[1].attrib['NOME-DA-AGENCIA']
    
      if float(year)/_fromyear>= 1.0:
+     #if float(year)/_fromyear>= 1.0 and float(year)/_fromyear<1.0013:
         ic.append([info.tag,year,title,student])
 
  return [msc,dsc,ic]
@@ -303,6 +312,7 @@ def technicalProduction(_tree,_fromyear):
    if flag == 'SIM':
     important.append([title,year])
    if float(year)/_fromyear>= 1.0:
+   #if float(year)/_fromyear>= 1.0 and float(year)/_fromyear<1.0013:
     patent.append([kind.tag,title,year])
 
  return [patent]
