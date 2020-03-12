@@ -135,35 +135,35 @@ def printInfo(_info):
  item = countInfo(_info)
 
  now = datetime.datetime.now()
- print ''
- print 'RELATORIO DE:'
+ print ('')
+ print ('RELATORIO DE:')
  for it in item[0]:
-  print '              ' + it
- print ''
- print 'PROGRAMA:', item[1]
- print 'PERIODO ANALISADO: ' + item[2] + \
-       ' -- ' + str(now.month) + '/' + str(now.year)
- print ''
- print ' - total de publicacoes em congresso: ',item[3]
- print ' - total de artigos em journal: ',item[4]
- print '   - A1: ',item[5]
- print '   - A2: ',item[6]
- print '   - B1: ',item[7]
- print '   - B2: ',item[8]
- print '   - B3: ',item[9]
- print '   - B4: ',item[10]
- print '   - B5: ',item[11]
- print '   - C: ',item[12]
- print ' - total de capitulos publicados: ',item[13]
- print ' - total de livros publicados: ',item[14]
- print ' - total de IC: ',item[15]
- print ' - total de dissertacoes de MSc: ',item[16]
- print ' - total de teses de DSc: ',item[17]
- print ' - total de IC em andamento: ',item[18]
- print ' - total de dissertacoes de MSc em andamento: ',item[19]
- print ' - total de teses de DSc em andamento: ',item[20]
- print ' - total de patentes: ',item[21]
- print ''
+  print ('              ' + it)
+ print ('')
+ print ('PROGRAMA:', item[1])
+ print ('PERIODO ANALISADO: ' + item[2] + \
+       ' -- ' + str(now.month) + '/' + str(now.year))
+ print ('')
+ print (' - total de publicacoes em congresso: ',item[3])
+ print (' - total de artigos em journal: ',item[4])
+ print ('   - A1: ',item[5])
+ print ('   - A2: ',item[6])
+ print ('   - B1: ',item[7])
+ print ('   - B2: ',item[8])
+ print ('   - B3: ',item[9])
+ print ('   - B4: ',item[10])
+ print ('   - B5: ',item[11])
+ print ('   - C: ',item[12])
+ print (' - total de capitulos publicados: ',item[13])
+ print (' - total de livros publicados: ',item[14])
+ print (' - total de IC: ',item[15])
+ print (' - total de dissertacoes de MSc: ',item[16])
+ print (' - total de teses de DSc: ',item[17])
+ print (' - total de IC em andamento: ',item[18])
+ print (' - total de dissertacoes de MSc em andamento: ',item[19])
+ print (' - total de teses de DSc em andamento: ',item[20])
+ print (' - total de patentes: ',item[21])
+ print ('')
 
 def csvInfo(_info):
  item = countInfo(_info)
@@ -214,7 +214,7 @@ def removeDuplicates(_tupleList):
  # back to list
  return [map(list,b_set)]
 
-def allPrint():
+def allprint ():
 
  # retrieve lattes files
  lattes = []
@@ -226,11 +226,11 @@ def allPrint():
 
  fromyear = sys.argv[2]
  sumInfo = [retrieveInfo(sys.argv[1],lattes[0],fromyear)]
- print 'Analizando Lattes de',lattes[0]
+ print ('Analizando Lattes de',lattes[0])
  for name in lattes[1:]:
   info = retrieveInfo(sys.argv[1],name,fromyear)
   sumInfo = sumInfo + [info]
-  print 'Analizando Lattes de',name
+  print ('Analizando Lattes de',name)
 
  printInfo(sumInfo)
 
@@ -247,21 +247,21 @@ def allSave():
  fromyear = sys.argv[2]
  for name in lattes:
   info = retrieveInfo(sys.argv[1],name,fromyear)
-  print 'Analizando Lattes de',name
+  print ('Analizando Lattes de',name)
   #printInfo([info])
   csvInfo([info])
 
-def singlePrint(_program,_name,_fromyear):
+def singleprint (_program,_name,_fromyear):
 
  filename = os.getcwd()+'/'+_program+'/'+_name+'.xml'
  if os.path.isfile(filename):
-  print 'Analizando Lattes de',_name
+  print ('Analizando Lattes de' + _name)
   # retrieve lattes files
   info = [retrieveInfo(_program,_name,_fromyear)]
  else:
-  print ''
-  print 'Check scientist and program name!'
-  print ''
+  print ('')
+  print ('Check scientist and program name!')
+  print ('')
   return None
 
  printInfo(info)
@@ -269,14 +269,14 @@ def singlePrint(_program,_name,_fromyear):
 
 def main():
  if len(sys.argv) < 3:
-  print 'Requires program name, scientist name and starting date!'
-  print 'Ex. python report.py program name_of_scientist 2012'
-  print 'Ex. python report.py program 2012'
-  print ''
+  print ('Requires program name, scientist name and starting date!')
+  print ('Ex. python report.py program name_of_scientist 2012')
+  print ('Ex. python report.py program 2012')
+  print ('')
   sys.exit()
 
  else:
-  #allPrint()
+  #allprint ()
   allSave()
 
 if __name__ == "__main__":

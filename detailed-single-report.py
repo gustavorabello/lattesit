@@ -57,6 +57,28 @@ def retrieveInfo(_program,_name,_fromyear):
 
  return [pinfo,fromyear,congress,journal,chapter,book,msc,dsc,ic,mscNot,dscNot,icNot,patent]
 
+def nameInfo(_info):
+ zipped = zip(*_info)
+
+ countCongress = 0
+ congress = zipped[2]
+ print ('CONGRESSO')
+ for item in congress[0]:
+  print (item[3],item[1],item[4])
+  print ('')
+
+ print ('')
+
+ countJournal = 0
+ journal = zipped[3]
+ print ('PERIODICO')
+ for item in journal[0]:
+  print (item[3],item[1],item[5])
+  print ('')
+
+
+
+
 def countInfo(_info):
  zipped = zip(*_info)
 
@@ -68,7 +90,7 @@ def countInfo(_info):
  countJournal = 0
  journal = zipped[3]
 
- journal = removeDuplicates(journal)
+ #journal = removeDuplicates(journal)
 
  A1=0; A2=0; B1=0; B2=0; B3=0; B4=0; B5=0; C=0;
  for item in journal:
@@ -264,18 +286,20 @@ def singlePrint(_program,_name,_fromyear):
   print ('')
   return None
 
- printInfo(info)
+ #printInfo(info)
+ nameInfo(info)
  #csvInfo([info])
 
 def main():
- if len(sys.argv) != 4:
+ print (len(sys.argv))
+ if len(sys.argv) == 4: 
+  singlePrint(sys.argv[1],sys.argv[2],sys.argv[3])
+ else:
   print ('Requires program name, scientist name and starting date!')
   print ('Ex. python report.py program name_of_scientist 2012')
   print ('Ex. python report.py program 2012')
   print ('')
   sys.exit()
-
- singlePrint(sys.argv[1],sys.argv[2],sys.argv[3])
 
 if __name__ == "__main__":
  main()

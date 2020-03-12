@@ -93,6 +93,8 @@ def biblioProduction(_tree,_csvFile,_area,_fromyear):
  important = []
  congress = []
  journal = []
+ authorsJournal = []
+ authorsCongress = []
  chapter = []
  book = []
 
@@ -102,7 +104,12 @@ def biblioProduction(_tree,_csvFile,_area,_fromyear):
    for info in kind:
     number = info.attrib['SEQUENCIA-PRODUCAO']
     title = info[0].attrib['TITULO-DO-TRABALHO']
+    authorsCongress = []
+    for author in info:
+     if "NOME-PARA-CITACAO" in author.attrib:
+      authorsCongress.append(author.attrib['NOME-COMPLETO-DO-AUTOR'])
     year = info[0].attrib['ANO-DO-TRABALHO']
+    #print (year,title,len(info),authorsCongress)
     flag = info[0].attrib['FLAG-RELEVANCIA']
     doi = info[0].attrib['DOI']
     event = info[1].attrib['NOME-DO-EVENTO']
@@ -111,16 +118,21 @@ def biblioProduction(_tree,_csvFile,_area,_fromyear):
     if flag == 'SIM':
      important.append([title,event,year])
 
-    if float(year)/_fromyear>= 1.0:
     #if float(year)/_fromyear>= 1.0 and float(year)/_fromyear<1.0013:
-     congress.append([kind.tag,title,event,year])
+    if float(year)/_fromyear>= 1.0:
+     congress.append([kind.tag,title,event,year,authorsCongress])
 
   # Journal papers
   if kind.tag == 'ARTIGOS-PUBLICADOS':
    for info in kind:
     number = info.attrib['SEQUENCIA-PRODUCAO']
     title = info[0].attrib['TITULO-DO-ARTIGO']
+    authorsJournal = []
+    for author in info:
+     if "NOME-PARA-CITACAO" in author.attrib:
+      authorsJournal.append(author.attrib['NOME-COMPLETO-DO-AUTOR'])
     year = info[0].attrib['ANO-DO-ARTIGO']
+    #print (year,title,len(info),authorsJournal)
     flag = info[0].attrib['FLAG-RELEVANCIA']
     doi = info[0].attrib['DOI']
     journaltitle = info[1].attrib['TITULO-DO-PERIODICO-OU-REVISTA']
@@ -134,7 +146,7 @@ def biblioProduction(_tree,_csvFile,_area,_fromyear):
       reader = csv.reader(f, delimiter=',')
       for row in reader:
        if row[0] in issn:
-        journal.append([kind.tag,title,journaltitle,year,row[2]])
+        journal.append([kind.tag,title,journaltitle,year,row[2],authorsJournal])
 
   # Book and book chapters
   if kind.tag == 'LIVROS-E-CAPITULOS':
@@ -151,8 +163,8 @@ def biblioProduction(_tree,_csvFile,_area,_fromyear):
      if flag == 'SIM':
       important.append([title,booktitle,year])
  
-     if float(year)/_fromyear>= 1.0:
      #if float(year)/_fromyear>= 1.0 and float(year)/_fromyear<1.0013:
+     if float(year)/_fromyear>= 1.0:
       chapter.append([kind.tag,title,year])
 
    # Books
@@ -168,8 +180,8 @@ def biblioProduction(_tree,_csvFile,_area,_fromyear):
      if flag == 'SIM':
       important.append([booktitle,country,year])
   
-     if float(year)/_fromyear>= 1.0:
      #if float(year)/_fromyear>= 1.0 and float(year)/_fromyear<1.0013:
+     if float(year)/_fromyear>= 1.0:
       book.append([kind[0].tag,booktitle,year])
  
  return [important,congress,journal,chapter,book]
@@ -200,8 +212,8 @@ def thesisConcluded(_tree,_fromyear):
      scholarship = info[1].attrib['FLAG-BOLSA']
      agency = info[1].attrib['NOME-DA-AGENCIA']
    
-     if float(year)/_fromyear>= 1.0:
      #if float(year)/_fromyear>= 1.0 and float(year)/_fromyear<1.0013:
+     if float(year)/_fromyear>= 1.0:
       msc.append([info.tag,year,title,principal,agency])
 
     # D.Sc. concluded
@@ -213,8 +225,8 @@ def thesisConcluded(_tree,_fromyear):
      scholarship = info[1].attrib['FLAG-BOLSA']
      agency = info[1].attrib['NOME-DA-AGENCIA']
    
-     if float(year)/_fromyear>= 1.0:
      #if float(year)/_fromyear>= 1.0 and float(year)/_fromyear<1.0013:
+     if float(year)/_fromyear>= 1.0:
       dsc.append([info.tag,year,title,principal,agency])
 
     # IC concluded
@@ -226,8 +238,8 @@ def thesisConcluded(_tree,_fromyear):
      scholarship = info[1].attrib['FLAG-BOLSA']
      agency = info[1].attrib['NOME-DA-AGENCIA']
    
-     if float(year)/_fromyear>= 1.0 and \
      #if float(year)/_fromyear>= 1.0 and float(year)/_fromyear<1.0013 and \
+     if float(year)/_fromyear>= 1.0 and \
         quality == 'INICIACAO_CIENTIFICA':
         ic.append([info.tag,year,title,student])
 
@@ -260,8 +272,8 @@ def thesisNotConcluded(_tree,_fromyear):
      scholarship = info[1].attrib['FLAG-BOLSA']
      agency = info[1].attrib['NOME-DA-AGENCIA']
     
-     if float(year)/_fromyear>= 1.0:
      #if float(year)/_fromyear>= 1.0 and float(year)/_fromyear<1.0013:
+     if float(year)/_fromyear>= 1.0:
       msc.append([info.tag,year,title,principal,agency])
  
     # D.Sc. not concluded
@@ -273,8 +285,8 @@ def thesisNotConcluded(_tree,_fromyear):
      scholarship = info[1].attrib['FLAG-BOLSA']
      agency = info[1].attrib['NOME-DA-AGENCIA']
    
-     if float(year)/_fromyear>= 1.0:
      #if float(year)/_fromyear>= 1.0 and float(year)/_fromyear<1.0013:
+     if float(year)/_fromyear>= 1.0:
       dsc.append([info.tag,year,title,principal,agency])
 
     # IC not concluded
@@ -285,8 +297,8 @@ def thesisNotConcluded(_tree,_fromyear):
      scholarship = info[1].attrib['FLAG-BOLSA']
      agency = info[1].attrib['NOME-DA-AGENCIA']
    
-     if float(year)/_fromyear>= 1.0:
      #if float(year)/_fromyear>= 1.0 and float(year)/_fromyear<1.0013:
+     if float(year)/_fromyear>= 1.0:
         ic.append([info.tag,year,title,student])
 
  return [msc,dsc,ic]
@@ -311,8 +323,8 @@ def technicalProduction(_tree,_fromyear):
    flag = kind[0].attrib['FLAG-RELEVANCIA']
    if flag == 'SIM':
     important.append([title,year])
-   if float(year)/_fromyear>= 1.0:
    #if float(year)/_fromyear>= 1.0 and float(year)/_fromyear<1.0013:
+   if float(year)/_fromyear>= 1.0:
     patent.append([kind.tag,title,year])
 
  return [patent]
