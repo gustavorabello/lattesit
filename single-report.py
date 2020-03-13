@@ -68,7 +68,7 @@ def countInfo(_info):
  countJournal = 0
  journal = zipped[3]
 
- journal = removeDuplicates(journal)
+ #journal = removeDuplicates(journal)
 
  A1=0; A2=0; B1=0; B2=0; B3=0; B4=0; B5=0; C=0;
  for item in journal:

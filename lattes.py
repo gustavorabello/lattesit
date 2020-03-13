@@ -142,6 +142,8 @@ def biblioProduction(_tree,_csvFile,_area,_fromyear):
     if flag == 'SIM':
      important.append([title,journaltitle,year])
     if float(year)/_fromyear >= 1.0:
+     #journal.append([kind.tag,title,journaltitle,year,issn,authorsJournal])
+     # check publication with CAPES file
      with open(_csvFile, 'rt') as f:
       reader = csv.reader(f, delimiter=',')
       for row in reader:
