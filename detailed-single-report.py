@@ -60,22 +60,25 @@ def retrieveInfo(_program,_name,_fromyear):
 def nameInfo(_info):
  zipped = zip(*_info)
 
- countCongress = 0
- congress = zipped[2]
- print ('CONGRESSO')
- for item in congress[0]:
-  print (item[3],item[1],item[4])
-  print ('')
-
- print ('')
+#--------------------------------------------------
+#  countCongress = 0
+#  congress = zipped[2]
+#  #print ('CONGRESSO')
+#  for item in congress[0]:
+#   print (item[3],item[1],item[4])
+#   print ('')
+# 
+#  print ('')
+#-------------------------------------------------- 
 
  countJournal = 0
  journal = zipped[3]
- print ('PERIODICO')
+ #print ('PERIODICO')
  for item in journal[0]:
   print (item[3],item[1],item[5])
   print ('')
 
+ print ('')
 
 
 
@@ -269,7 +272,7 @@ def allSave():
  fromyear = float(sys.argv[3])
  for name in lattes:
   info = retrieveInfo(sys.argv[1],name,fromyear)
-  print ('Analizando Lattes de',name)
+  print (name)
   #printInfo([info])
   csvInfo([info])
 
@@ -277,7 +280,9 @@ def singlePrint(_program,_name,_fromyear):
 
  filename = os.getcwd()+'/'+_program+'/'+_name+'.xml'
  if os.path.isfile(filename):
-  print ('Analizando Lattes de',_name)
+  #print ('Analizando Lattes de',_name)
+  print (_name.upper())
+  print (' ')
   # retrieve lattes files
   info = [retrieveInfo(_program,_name,_fromyear)]
  else:
@@ -291,7 +296,6 @@ def singlePrint(_program,_name,_fromyear):
  #csvInfo([info])
 
 def main():
- print (len(sys.argv))
  if len(sys.argv) == 4: 
   singlePrint(sys.argv[1],sys.argv[2],sys.argv[3])
  else:
