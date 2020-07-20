@@ -137,7 +137,7 @@ def biblioProduction(_tree,_csvFile,_area,_fromyear):
     doi = info[0].attrib['DOI']
     journaltitle = info[1].attrib['TITULO-DO-PERIODICO-OU-REVISTA']
     issn = info[1].attrib['ISSN']
-    issn = str(issn[:4]) + '-' + str(issn[4:])
+    issn = str(issn[:4]) + '-' + str(issn[4:8])
     #addinfo = info[-1].attrib['DESCRICAO-INFORMACOES-ADICIONAIS']
     if flag == 'SIM':
      important.append([title,journaltitle,year])
@@ -152,6 +152,8 @@ def biblioProduction(_tree,_csvFile,_area,_fromyear):
 
   # Book and book chapters
   if kind.tag == 'LIVROS-E-CAPITULOS':
+   #if kind[1].tag == 'CAPITULOS-DE-LIVROS-PUBLICADOS':
+   # for info in kind[1]:
    if kind[0].tag == 'CAPITULOS-DE-LIVROS-PUBLICADOS':
     for info in kind[0]:
      number = info.attrib['SEQUENCIA-PRODUCAO']

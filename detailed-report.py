@@ -57,31 +57,6 @@ def retrieveInfo(_program,_name,_fromyear):
 
  return [pinfo,fromyear,congress,journal,chapter,book,msc,dsc,ic,mscNot,dscNot,icNot,patent]
 
-def nameInfo(_info):
- zipped = zip(*_info)
-
-#--------------------------------------------------
-#  countCongress = 0
-#  congress = zipped[2]
-#  #print ('CONGRESSO')
-#  for item in congress[0]:
-#   print (item[3],item[1],item[4])
-#   print ('')
-# 
-#  print ('')
-#-------------------------------------------------- 
-
- countJournal = 0
- journal = zipped[3]
- #print ('PERIODICO')
- for item in journal[0]:
-  print (item[3],item[1],item[5])
-  print ('')
-
- print ('')
-
-
-
 def countInfo(_info):
  zipped = zip(*_info)
 
@@ -200,40 +175,57 @@ def csvInfo(_info):
   text_file = open(filename, "a")
  else:
   text_file = open(filename, "w")
-  header = 'producao/nome do pesquidador ,' + (''.join(item[0])).encode('latin-1') + '\n' # name
-  header = 'Periodicos Indexados Qualis A1, ' + str(item[5]) + '\n'
-  header = 'Periodicos Indexados Qualis A2, '+ str(item[6]) + '\n'
-  header = 'Periodicos Indexados Qualis B1, '+ str(item[7]) + '\n'
-  header = 'Periodicos Indexados Qualis B2, '+ str(item[8]) + '\n'
-  header = 'Periodicos Indexados Qualis B3, '+ str(item[9]) + '\n'
-  header = 'Periodicos Indexados Qualis B4, '+ str(item[10]) + '\n'
-  header = 'Periodicos Indexados Qualis B5, '+ str(item[11]) + '\n'
-  header = 'Periodicos Indexados Qualis C, '+ str(item[12]) + '\n'
-  header = 'Total em Periodicos, '+ str(item[8]+item[7]+item[6]+item[5]+item[9]+item[10]+item[11]+item[12]) + '\n'
-  header = 'Capitulos, '+ str(item[13]) + '\n'
-  header = 'Livros, '+ str(item[14]) + '\n'
-  header = 'Patentes Depositadas ou Concedidas, ' + str(item[21]) + '\n'
-  header = 'Alunos de IC, '+ str(item[15]+item[18]) + '\n'
-  header = 'Orientacao de Mestres Concluida, '+ str(item[16]) + '\n'
-  header = 'Orientacao de Mestres em Andamento, '+ str(item[19]) + '\n'
-  header = 'Orientacao de Doutores Concluida, '+ str(item[17]) + '\n'
-  header = 'Orientacao de Doutores em Andamento, '+ str(item[20]) + '\n'
-  header = 'Artigos em congressos' + str(item[3]) + '\n' 
+  header = ' ,'
+  header = header + 'Periodicos Indexados Qualis A1, '
+  header = header + 'Periodicos Indexados Qualis A2, '
+  header = header + 'Periodicos Indexados Qualis B1, '
+  header = header + 'Periodicos Indexados Qualis B2, '
+  header = header + 'Periodicos Indexados Qualis B3, '
+  header = header + 'Periodicos Indexados Qualis B4, '
+  header = header + 'Periodicos Indexados Qualis B5, '
+  header = header + 'Periodicos Indexados Qualis C, '
+  header = header + 'Total em Periodicos, '
+  header = header + 'Capitulos, '
+  header = header + 'Livros, '
+  header = header + 'Patentes Depositadas ou Concedidas, '
+  header = header + 'Alunos de IC, '
+  header = header + 'Orientacao de Mestres Concluida, '
+  header = header + 'Orientacao de Mestres em Andamento, '
+  header = header + 'Orientacao de Doutores Concluida, '
+  header = header + 'Orientacao de Doutores em Andamento, '
+  header = header + 'Artigos em congressos, '
+  header = header + 'Equacao 1, '
+  header = header + 'Equacao 2 \n'
   text_file.write(header)
 
- #string = (''.join(item[0])).encode('latin-1') + ',  ' # name
- #string = string + str(item[5]) + ',  ' # A1
- #string = string + str(item[6]) + ',  ' # A2
- #string = string + str(item[7]) + ',  ' # B1
- #string = string + str(item[8]) + ',  ' # B2
- #string = string + str(item[13]) + ',  ' # chapter
- #string = string + str(item[14]) + ',  ' # book
- #string = string + str(item[21]) + ',  ' # patent
- #string = string + str(item[15]+item[18]) + ',  ' # ic
- #string = string + str(item[16]+item[19]) + ',  ' # msc
- #string = string + str(item[17]+item[20]) + ',  ' # dsc
- #string = string + str(item[3]) + '\n' # congress
- #text_file.write(string)
+ string = (''.join(item[0])).encode('latin-1') + ',  ' # name
+ string = string + str(item[5]) + ',  ' # A1
+ string = string + str(item[6]) + ',  ' # A2
+ string = string + str(item[7]) + ',  ' # B1
+ string = string + str(item[8]) + ',  ' # B2
+ string = string + str(item[9]) + ',  ' # B3
+ string = string + str(item[10]) + ',  ' # B4
+ string = string + str(item[11]) + ',  ' # B5
+ string = string + str(item[12]) + ',  ' # C
+ string = string + str(item[8]+item[7]+item[6]+item[5]+item[9]+item[10]+item[11]+item[12]) + ',  ' # B2
+ string = string + str(item[13]) + ',  ' # chapter
+ string = string + str(item[14]) + ',  ' # book
+ string = string + str(item[21]) + ',  ' # patent
+ string = string + str(item[15]+item[18]) + ',  ' # ic
+ string = string + str(item[16]) + ',  ' # msc
+ string = string + str(item[19]) + ',  ' # msc
+ string = string + str(item[17]) + ',  ' # dsc
+ string = string + str(item[20]) + ',  ' # dsc
+ string = string + str(item[3]) + ',  ' # congress
+ eq1 = 1.00*item[5] + 0.75*item[6] + \
+       0.75*item[7] + 0.50*item[8] + \
+       0.30*item[9]
+ string = string + str(eq1) + ',  ' # eq1 
+ eq2 = 1.00*item[5] + 0.75*item[6] + \
+       0.75*item[7] + 0.50*item[8] + \
+       0.30*item[9]
+ string = string + str(eq2) + '\n' # eq2
+ text_file.write(string)
  text_file.close()
 
 ### Remove duplicates from a list 
@@ -246,7 +238,7 @@ def removeDuplicates(_tupleList):
  # back to list
  return [map(list,b_set)]
 
-def allPrint():
+def allprint ():
 
  # retrieve lattes files
  lattes = []
@@ -276,20 +268,18 @@ def allSave():
   name = os.path.splitext(base)[0]
   lattes.append(name)
 
- fromyear = float(sys.argv[3])
+ fromyear = sys.argv[2]
  for name in lattes:
   info = retrieveInfo(sys.argv[1],name,fromyear)
-  print (name)
+  print ('Analizando Lattes de',name)
   #printInfo([info])
   csvInfo([info])
 
-def singlePrint(_program,_name,_fromyear):
+def singleprint (_program,_name,_fromyear):
 
  filename = os.getcwd()+'/'+_program+'/'+_name+'.xml'
  if os.path.isfile(filename):
-  #print ('Analizando Lattes de',_name)
-  print (_name.upper())
-  print (' ')
+  print ('Analizando Lattes de' + _name)
   # retrieve lattes files
   info = [retrieveInfo(_program,_name,_fromyear)]
  else:
@@ -298,19 +288,20 @@ def singlePrint(_program,_name,_fromyear):
   print ('')
   return None
 
- #printInfo(info)
- nameInfo(info)
- #csvInfo([info])
+ printInfo(info)
+ csvInfo([info])
 
 def main():
- if len(sys.argv) == 4: 
-  singlePrint(sys.argv[1],sys.argv[2],sys.argv[3])
- else:
+ if len(sys.argv) < 3:
   print ('Requires program name, scientist name and starting date!')
   print ('Ex. python report.py program name_of_scientist 2012')
   print ('Ex. python report.py program 2012')
   print ('')
   sys.exit()
+
+ else:
+  #allprint ()
+  allSave()
 
 if __name__ == "__main__":
  main()
